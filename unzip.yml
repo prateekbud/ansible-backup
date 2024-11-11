@@ -1,0 +1,7 @@
+- name: Unzip all .zip files in app_data directory using shell
+  hosts: all
+  become: yes
+  tasks:
+    - name: Unzip files using wildcard
+      shell: "unzip /home/awxhost/app_data/*.zip -d /home/awxhost/app_data/unzip/"
+      ignore_errors: yes
