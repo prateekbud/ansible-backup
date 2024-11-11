@@ -2,13 +2,6 @@
   hosts: all
   become: yes
   tasks:
-    - name: Compress directory
-      archive:
-        path: "/home/awxhost/app_data"
-        dest: "/home/awxhost/app_data/archive-{{ ansible_date_time.date }}-{{ ansible_date_time.time }}.zip"
-        format: zip
-      register: zip_result
-
-    - name: Display zip file name
-      debug:
-        msg: "Zip file created: {{ zip_result.dest }}"
+    - name: Compress directory App Data
+      command: "zip -r /home/awxhost/app_data/archive-{{ ansible_date_time.date }}-{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}{{ ansible_date_time.second }}.zip /home/awxhost/app_data"
+      
