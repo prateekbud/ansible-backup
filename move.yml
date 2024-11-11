@@ -1,0 +1,19 @@
+- name: Move zip files to archive folder
+  hosts: all
+  become: yes
+  tasks:
+    - name: Ensure the archive directory exists
+      file:
+        path: /home/awxhost/app_data/archive
+        state: directory
+        mode: '0755'
+
+    - name: Move zip files to archive directory
+      command: mv /home/awxhost/app_data/*.zip /home/awxhost/app_data/archive/
+      args:
+        removes: /home/awxhost/app_data/*.zip
+      register: move_result
+
+    - name: Debug move result
+      debug:
+        msg: "{{ move_result }}"
