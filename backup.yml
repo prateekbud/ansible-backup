@@ -1,17 +1,14 @@
-- name: Backup Files
+- name: Zip Files
   hosts: all
   become: yes
   tasks:
-    - name: Create backup directory if not exists
-      file:
-        path: "/opt/backup"
-        state: directory
-        mode: '0755'
+    - name: Compress directory
+      zip:
+        path: "/home/awxhost/app_data"
+        dest: "/home/awxhost/app_data/archive-{{ ansible_date_time.date }}-{{ ansible_date_time.time }}.zip"
+      register: zip_result
 
-    - name: Create backup with timestamp
-      shell: |
-        tar -czf /opt/backup/backup-$(date +%Y%m%d-%H%M%S).tar.gz /home/awxhost/documents
+    - name: Display zip file name
+      debug:
+        msg: "Zip file created: {{ zip_result.dest }}"
 
-    - name: Remove old backups
-      shell: |
-        find /opt/backup/ -type f -mtime +7 -delete
