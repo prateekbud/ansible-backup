@@ -1,5 +1,5 @@
 - name: Backup Files
-  hosts: managed_nodes
+  hosts: all
   become: yes
   tasks:
     - name: Create backup directory if not exists
@@ -10,8 +10,8 @@
 
     - name: Create backup with timestamp
       shell: |
-        tar -czf {{ backup_dir }}/backup-$(date +%Y%m%d-%H%M%S).tar.gz {{ source_dir }}
+        tar -czf /opt/backup/backup-$(date +%Y%m%d-%H%M%S).tar.gz /home/awxhost/documents
 
     - name: Remove old backups
       shell: |
-        find {{ backup_dir }} -type f -mtime +{{ retention_days }} -delete
+        find /opt/backup/ -type f -mtime +7 -delete
