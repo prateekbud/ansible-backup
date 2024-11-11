@@ -5,5 +5,10 @@
     - name: Compress directory
       archive:
         path: "/home/awxhost/app_data"
-        dest: "/home/awxhost/app_data/archive-$(date +%Y%m%d-%H%M%S).zip"
+        dest: "/home/awxhost/app_data/archive-{{ ansible_date_time.date }}-{{ ansible_date_time.time }}.zip"
         format: zip
+      register: zip_result
+
+    - name: Display zip file name
+      debug:
+        msg: "Zip file created: {{ zip_result.dest }}"
