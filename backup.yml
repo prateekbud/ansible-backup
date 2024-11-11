@@ -1,0 +1,17 @@
+- name: Backup Files
+  hosts: managed_nodes
+  become: yes
+  tasks:
+    - name: Create backup directory if not exists
+      file:
+        path: "/opt/backup"
+        state: directory
+        mode: '0755'
+
+    - name: Create backup with timestamp
+      shell: |
+        tar -czf {{ backup_dir }}/backup-$(date +%Y%m%d-%H%M%S).tar.gz {{ source_dir }}
+
+    - name: Remove old backups
+      shell: |
+        find {{ backup_dir }} -type f -mtime +{{ retention_days }} -delete
